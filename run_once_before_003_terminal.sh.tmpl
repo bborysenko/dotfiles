@@ -1,0 +1,9 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+# Load iTerm2 preferences a from custom folder
+if defaults read com.googlecode.iterm2 &> /dev/null ; then
+    defaults write com.googlecode.iterm2 PrefsCustomFolder -string "~/.config/iterm2"
+    defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+fi
+{{ end -}}
