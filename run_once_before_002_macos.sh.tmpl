@@ -1,0 +1,112 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+###############################################################################
+# Change the language Mac uses
+#
+# - https://support.apple.com/guide/mac-help/mh26684
+# - https://github.com/mima-mima/macos-add-languages
+###############################################################################
+function macos_language {
+    local locale="${1:-en-UA}"
+
+    defaults delete .GlobalPreferences_m AppleLanguages
+    defaults write .GlobalPreferences_m AppleLanguages -array-add "$locale"
+
+    for v in "${@:2}"; do
+        defaults write .GlobalPreferences_m AppleLanguages -array-add "$v"
+    done
+    
+    defaults write .GlobalPreferences_m AppleLocale -string "$locale"
+}
+
+###############################################################################
+# Change Input Sources settings on Mac (Works only after restarting!) 
+#
+# - https://support.apple.com/en-gb/guide/mac-help/mchl84525d76
+# - https://github.com/mathiasbynens/custom.keylayout/issues/7
+###############################################################################
+function macos_keyboard_input_sources {
+    defaults delete com.apple.HIToolbox AppleEnabledInputSources &> /dev/null || true
+
+    for v in "$@"; do
+        case $v in
+        "U.S.")
+            defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict>
+                <key>InputSourceKind</key><string>Keyboard Layout</string>
+                <key>KeyboardLayout ID</key><integer>0</integer>
+                <key>KeyboardLayout Name</key><string>U.S.</string>
+            </dict>'
+            ;;
+        "Ukrainian")
+            defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict>
+                <key>InputSourceKind</key><string>Keyboard Layout</string>
+                <key>KeyboardLayout ID</key><integer>-2354</integer>
+                <key>KeyboardLayout Name</key><string>Ukrainian-PC</string>
+            </dict>'
+            ;;
+        esac
+    done
+
+    defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict>
+            <key>Bundle ID</key><string>com.apple.CharacterPaletteIM</string>
+            <key>InputSourceKind</key><string>Non Keyboard Input Method</string>
+        </dict>'
+    defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict>
+            <key>Bundle ID</key><string>com.apple.inputmethod.EmojiFunctionRowItem</string>
+            <key>InputSourceKind</key><string>Non Keyboard Input Method</string>
+        </dict>'
+    defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict>
+            <key>Bundle ID</key><string>com.apple.inputmethod.ironwood</string>
+            <key>InputSourceKind</key><string>Non Keyboard Input Method</string>
+        </dict>'
+}
+
+###############################################################################
+# Use a light or dark appearance
+#
+# - https://support.apple.com/guide/mac-help/mchl52e1c2d2
+# - https://developer.apple.com/forums/thread/118974
+###############################################################################
+function macos_appearance {
+    case ${1:-light} in
+    "light")
+        defaults delete NSGlobalDomain AppleInterfaceStyle &> /dev/null || true
+        defaults delete NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically &> /dev/null || true
+        ;;
+    "dark")
+        defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
+        defaults delete NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically &> /dev/null || true
+        ;;
+    "auto")
+        defaults delete NSGlobalDomain AppleInterfaceStyle &> /dev/null || true
+        defaults write NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool true
+        ;;
+    esac
+}
+
+###############################################################################
+# Automatically hide and show the Dock
+# 
+# - https://support.apple.com/guide/mac-help/mchlp1119
+###############################################################################
+function macos_dock_autohide {
+    case ${1:-false} in
+    "true")
+        defaults write com.apple.dock autohide -bool true
+        ;;
+    "false")
+        defaults delete com.apple.dock autohide &> /dev/null || true
+        ;;
+    esac
+}
+
+macos_language {{ .macos.languages | quoteList | join " " }}
+macos_keyboard_input_sources {{ .macos.keyboard.input_sources | quoteList | join " " }}
+macos_appearance "{{ .macos.appearance }}"
+macos_dock_autohide "{{ .macos.dock.autohide }}"
+
+for app in "Dock" "Finder"; do
+  killall "${app}" > /dev/null 2>&1
+done
+{{ end -}}

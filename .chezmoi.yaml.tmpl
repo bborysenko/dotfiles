@@ -1,0 +1,10 @@
+data:
+{{- if eq .chezmoi.os "darwin"}}
+    macos:
+        languages: ["en-UA", "uk-UA"]
+        keyboard:
+            input_sources: ["U.S.", "Ukrainian"]
+        appearance: auto
+        dock:
+            autohide: true
+{{ end -}}
