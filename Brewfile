@@ -3,6 +3,7 @@ tap "homebrew/cask"
 tap "homebrew/core"
 
 brew "chezmoi"
+brew "neofetch"
 brew "tree"
 brew "wget"
 brew "mtr"
