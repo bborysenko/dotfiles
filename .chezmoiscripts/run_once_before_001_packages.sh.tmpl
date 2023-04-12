@@ -2,6 +2,6 @@
 #!/bin/bash
 
 # Brewfile hash: {{ include "Brewfile" | sha256sum }}
-brew bundle install --no-lock --file {{ .chezmoi.sourceDir }}/Brewfile
+brew bundle install --no-upgrade --no-lock --file {{ .chezmoi.sourceDir }}/Brewfile
 brew bundle cleanup --no-lock --file {{ .chezmoi.sourceDir }}/Brewfile
 {{ end -}}
