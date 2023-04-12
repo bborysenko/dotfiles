@@ -73,6 +73,7 @@ ZSH_THEME="robbyrussell"
 plugins=(
   gcloud
   git
+  terraform
 )
 
 source $ZSH/oh-my-zsh.sh
