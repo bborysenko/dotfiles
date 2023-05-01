@@ -1,0 +1,17 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+brew bundle install --no-upgrade --no-lock --file=- <<EOF
+brew "jenv"
+brew "openjdk@11"
+brew "openjdk@17"
+EOF
+{{ end -}}
+
+sudo ln -sfn $(brew --prefix)/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+sudo ln -sfn $(brew --prefix)/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+
+jenv add /Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home/
+jenv add /Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home/
+
+jenv global 17.0
