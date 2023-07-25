@@ -3,6 +3,7 @@ tap "homebrew/cask"
 tap "homebrew/core"
 
 brew "chezmoi"
+brew "jq"
 brew "krew"
 brew "neofetch"
 brew "terraform"
