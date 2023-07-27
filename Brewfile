@@ -2,6 +2,7 @@ tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
 
+brew "cookiecutter"
 brew "chezmoi"
 brew "jq"
 brew "krew"
