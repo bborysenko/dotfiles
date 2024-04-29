@@ -18,3 +18,6 @@ ZSH_THEME="robbyrussell"
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
+
+# Provide Chezmoi completions (if installed).
+if command -v chezmoi > /dev/null; then eval "$(chezmoi completion zsh)"; fi
