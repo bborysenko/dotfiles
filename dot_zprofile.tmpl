@@ -1,5 +1,7 @@
+{{ if eq .chezmoi.os "darwin" }}
 # Configure shell for Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Configure shell for OrbStack
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+{{ end }}
