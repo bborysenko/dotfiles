@@ -20,3 +20,11 @@ if ! gcloud --version &> /dev/null; then
 else
 	echo "✅ Google Cloud CLI has been already installed"
 fi
+
+if [ -f ~/.docker/config.json ] && ! grep -q europe-docker.pkg.dev ~/.docker/config.json; then
+	echo "⏳ Configuring authentication to Artifact Registry for Docker ..."
+	gcloud auth configure-docker europe-docker.pkg.dev --quiet
+	echo "⏳ Authentication to Artifact Registry for Docker has been configured."
+else
+	echo "⏳ Authentication to Artifact Registry for Docker has been already configured."
+fi
