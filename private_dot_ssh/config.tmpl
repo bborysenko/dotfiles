@@ -1,0 +1,7 @@
+{{ if eq .chezmoi.os "darwin" -}}
+Include ~/.orbstack/ssh/config
+{{- end }}
+
+Host *
+    HostKeyAlgorithms=+ssh-dss,ssh-rsa
+    PubkeyAcceptedAlgorithms=+ssh-rsa
