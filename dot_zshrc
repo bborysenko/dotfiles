@@ -10,6 +10,10 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
+# To enable shell autocompletions, specify the path to the Google Cloud SDK installation in a non-standard location using asdf.
+# https://github.com/jthegedus/asdf-gcloud/issues/5#issuecomment-1978404124
+export CLOUDSDK_HOME="$(asdf where gcloud)"
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -17,6 +21,7 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     asdf
+    gcloud
     git
 )
 
