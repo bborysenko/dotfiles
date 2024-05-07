@@ -11,3 +11,18 @@ if ! brew list visual-studio-code &> /dev/null; then
 else
 	echo "✅ Visual Studio Code has been already installed"
 fi
+
+EXTENSIONS=(
+	"hashicorp.terraform"
+	"wayou.vscode-todo-highlight"
+)
+
+for EXTENSION in ${EXTENSIONS[@]}; do
+  if ! grep  -q "\"id\":\"$EXTENSION\"" ~/.vscode/extensions/extensions.json; then
+	echo "⏳ Installing Visual Studio Code extension $EXTENSION ..."
+	code --install-extension $EXTENSION
+	echo "✅ Visual Studio Code extension $EXTENSION has been installed"
+	else
+		echo "✅ Visual Studio Code extension $EXTENSION has been already installed"
+	fi
+done
