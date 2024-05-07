@@ -21,6 +21,16 @@ else
 	echo "✅ Google Cloud CLI has been already installed"
 fi
 
+# Install gke-gcloud-auth-plugin to interact with GKE
+# https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl#gcloud
+if ! gke-gcloud-auth-plugin --version &> /dev/null; then
+	echo "⏳ Installing gke-gcloud-auth-plugin ..."
+	gcloud components install gke-gcloud-auth-plugin --quiet
+	echo "✅ gke-gcloud-auth-plugin has been installed"
+else
+	echo "✅ gke-gcloud-auth-plugin has been already installed"
+fi
+
 if [ -f ~/.docker/config.json ] && ! grep -q europe-docker.pkg.dev ~/.docker/config.json; then
 	echo "⏳ Configuring authentication to Artifact Registry for Docker ..."
 	gcloud auth configure-docker europe-docker.pkg.dev --quiet
