@@ -23,6 +23,7 @@ plugins=(
     asdf
     gcloud
     git
+    helm
 )
 
 source $ZSH/oh-my-zsh.sh
