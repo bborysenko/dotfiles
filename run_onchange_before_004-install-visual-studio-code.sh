@@ -14,6 +14,9 @@ fi
 
 EXTENSIONS=(
 	"hashicorp.terraform"
+	"ms-azuretools.vscode-docker"
+	"ms-vscode-remote.remote-containers"
+	"redhat.vscode-yaml"
 	"wayou.vscode-todo-highlight"
 )
 
