@@ -30,3 +30,11 @@ source $ZSH/oh-my-zsh.sh
 
 # Provide Chezmoi completions (if installed).
 if command -v chezmoi > /dev/null; then eval "$(chezmoi completion zsh)"; fi
+
+# Provide OrbStack completions
+if (( $+commands[orbctl] )); then
+  eval "$(orbctl completion zsh)"
+  compdef _orb orbctl
+  compdef _orb orb
+fi
+
