@@ -10,7 +10,7 @@ if [[ "$CHEZMOI_OS" == "linux" ]]; then
 		sudo chsh -s $(which zsh) $(whoami)
 		echo "✅ Zsh has been installed"
 	else
-		echo "✅ Zsh has been already installed"
+		echo "✅ Zsh is already installed"
 	fi
 fi
 
@@ -19,5 +19,5 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	echo "✅ Oh My Zsh has been installed"
 else
-	echo "✅ Oh My Zsh has been already installed"
+	echo "✅ Oh My Zsh is already installed"
 fi

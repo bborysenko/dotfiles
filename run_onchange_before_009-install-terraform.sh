@@ -11,5 +11,5 @@ if ! terraform version &> /dev/null; then
 	asdf global terraform latest
 	echo "✅ Terraform has been installed"
 else
-	echo "✅ Terraform has been already installed"
+	echo "✅ Terraform is already installed"
 fi

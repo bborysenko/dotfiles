@@ -9,5 +9,5 @@ if ! brew list asdf &> /dev/null; then
 	brew install asdf
 	echo "✅ Asdf has been installed"
 else
-	echo "✅ Asdf has been already installed"
+	echo "✅ Asdf is already installed"
 fi

@@ -9,5 +9,5 @@ if ! brew list iterm2 &> /dev/null; then
 	brew install --cask iterm2
 	echo "✅ iTerm2 has been installed"
 else
-	echo "✅ iTerm2 has been already installed"
+	echo "✅ iTerm2 is already installed"
 fi

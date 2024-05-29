@@ -11,7 +11,7 @@ if ! helm version &> /dev/null; then
 	asdf global helm latest
 	echo "✅ Helm has been installed"
 else
-	echo "✅ Helm has been already installed"
+	echo "✅ Helm is already installed"
 fi
 
 plugins=(

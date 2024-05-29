@@ -9,7 +9,7 @@ if ! brew list visual-studio-code &> /dev/null; then
 	brew install --cask visual-studio-code
 	echo "✅ Visual Studio Code has been installed"
 else
-	echo "✅ Visual Studio Code has been already installed"
+	echo "✅ Visual Studio Code is already installed"
 fi
 
 EXTENSIONS=(
@@ -26,6 +26,6 @@ for EXTENSION in ${EXTENSIONS[@]}; do
 	code --install-extension $EXTENSION
 	echo "✅ Visual Studio Code extension $EXTENSION has been installed"
 	else
-		echo "✅ Visual Studio Code extension $EXTENSION has been already installed"
+		echo "✅ Visual Studio Code extension $EXTENSION is already installed"
 	fi
 done

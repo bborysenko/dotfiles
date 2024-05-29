@@ -9,5 +9,5 @@ if ! mas list | grep 1091189122 &> /dev/null; then
 	mas install 1091189122
 	echo "✅ Bear Notes has been installed"
 else
-	echo "✅ Bear Notes has been already installed"
+	echo "✅ Bear Notes is already installed"
 fi

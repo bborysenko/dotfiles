@@ -9,5 +9,5 @@ if ! brew list google-chrome &> /dev/null; then
 	brew install --cask google-chrome
 	echo "✅ Google Chrome has been installed"
 else
-	echo "✅ Google Chrome has been already installed"
+	echo "✅ Google Chrome is already installed"
 fi

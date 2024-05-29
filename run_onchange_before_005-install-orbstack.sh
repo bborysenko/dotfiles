@@ -9,5 +9,5 @@ if ! brew list orbstack &> /dev/null; then
 	brew install --cask orbstack
 	echo "✅ OrbStack has been installed"
 else
-	echo "✅ OrbStack has been already installed"
+	echo "✅ OrbStack is already installed"
 fi

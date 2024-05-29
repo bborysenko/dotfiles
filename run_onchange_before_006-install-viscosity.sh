@@ -9,5 +9,5 @@ if ! brew list viscosity &> /dev/null; then
 	brew install --cask viscosity
 	echo "✅ Viscosity has been installed"
 else
-	echo "✅ Viscosity has been already installed"
+	echo "✅ Viscosity is already installed"
 fi

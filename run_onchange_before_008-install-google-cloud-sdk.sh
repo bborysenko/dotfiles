@@ -18,7 +18,7 @@ if ! gcloud --version &> /dev/null; then
 	fi
 	echo "✅ Google Cloud CLI has been installed"
 else
-	echo "✅ Google Cloud CLI has been already installed"
+	echo "✅ Google Cloud CLI is already installed"
 fi
 
 # Install gke-gcloud-auth-plugin to interact with GKE
@@ -28,7 +28,7 @@ if ! gke-gcloud-auth-plugin --version &> /dev/null; then
 	gcloud components install gke-gcloud-auth-plugin --quiet
 	echo "✅ gke-gcloud-auth-plugin has been installed"
 else
-	echo "✅ gke-gcloud-auth-plugin has been already installed"
+	echo "✅ gke-gcloud-auth-plugin is already installed"
 fi
 
 if [ -f ~/.docker/config.json ] && ! grep -q europe-docker.pkg.dev ~/.docker/config.json; then
