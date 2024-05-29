@@ -38,3 +38,7 @@ if (( $+commands[orbctl] )); then
   compdef _orb orb
 fi
 
+# k9s completions
+if (( $+commands[k9s] )); then
+    eval "$(k9s completion zsh)"
+fi
