@@ -37,9 +37,11 @@ sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --apply bborysenko
 
 ## Developer Environment
 
-- Shell ([Zsh](https://www.zsh.org), [Oh My Zsh](https://ohmyz.sh))
-- Terminal ([iTerm2](https://iterm2.com))
-- Containers & VMs ([OrbStack](https://orbstack.dev))
+- Terminal ([iTerm2](https://iterm2.com), [Zsh](https://www.zsh.org), [Oh My Zsh](https://ohmyz.sh))
+- IDE ([Visual Studio Code](https://code.visualstudio.com/))
+- Infrastructure ([Google Cloud SDK](https://cloud.google.com/sdk), [Terraform](https://www.terraform.io/))
+- Containers & VMs ([OrbStack](https://orbstack.dev), [k9s](https://k9scli.io/), [Helm](https://helm.sh/))
+
 
 ## References
 
