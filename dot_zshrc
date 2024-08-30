@@ -24,6 +24,7 @@ plugins=(
     gcloud
     git
     helm
+    terraform
 )
 
 source $ZSH/oh-my-zsh.sh
