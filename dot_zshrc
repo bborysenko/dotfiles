@@ -42,3 +42,5 @@ fi
 if (( $+commands[k9s] )); then
     eval "$(k9s completion zsh)"
 fi
+
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
