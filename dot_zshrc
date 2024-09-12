@@ -45,3 +45,6 @@ if (( $+commands[k9s] )); then
 fi
 
 export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
