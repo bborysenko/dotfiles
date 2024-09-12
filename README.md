@@ -33,15 +33,16 @@ sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --apply bborysenko
 
 - Web Browser ([Safari](https://www.apple.com/safari/), [Chrome](https://www.google.com/))
 - Note Taking ([Apple Notes](https://apps.apple.com/us/app/notes/id1110145109), [Bear Notes](https://bear.app))
-- Task Management ([Apple Reminders](https://apps.apple.com/us/app/reminders/id1108187841))
+- Task Management ([Apple Reminders](https://apps.apple.com/us/app/reminders/id1108187841), [Things](https://culturedcode.com/things/))
 
-## Developer Environment
+## Development Environment
 
 - Terminal ([iTerm2](https://iterm2.com), [Zsh](https://www.zsh.org), [Oh My Zsh](https://ohmyz.sh))
 - IDE ([Visual Studio Code](https://code.visualstudio.com/))
 - Infrastructure ([Google Cloud SDK](https://cloud.google.com/sdk), [Terraform](https://www.terraform.io/))
 - Containers & VMs ([OrbStack](https://orbstack.dev), [k9s](https://k9scli.io/), [Helm](https://helm.sh/))
-
+- Programming ([Java](https://www.java.com/))
+- Package & version managers ([Homebrew](https://brew.sh/), [asdf](https://asdf-vm.com/). [SDKMAN](https://sdkman.io/))
 
 ## References
 
