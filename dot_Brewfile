@@ -1,0 +1,16 @@
+# CLI
+brew "chezmoi"
+brew "gh"
+brew "git"
+brew "mas"
+brew "mise"
+brew "tree"
+
+# Apps
+cask "claude-code"
+cask "iterm2"
+cask "visual-studio-code"
+cask "google-chrome"
+
+# Mac App Store
+mas "Bear", id: 1091189122
