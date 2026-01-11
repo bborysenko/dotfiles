@@ -76,6 +76,11 @@ Import VPN configurations.
 
 Sign in for settings sync.
 
+### iTerm2
+
+Settings are auto-loaded from `~/.config/iterm2`. Includes:
+- Natural Text Editing preset (Cmd+Arrow for line, Option+Arrow for word navigation)
+
 ## Daily Usage
 
 ```bash
