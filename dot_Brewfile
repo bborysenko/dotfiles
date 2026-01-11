@@ -8,9 +8,17 @@ brew "tree"
 
 # Apps
 cask "claude-code"
-cask "iterm2"
-cask "visual-studio-code"
+cask "claude"
+cask "cleanshot"
 cask "google-chrome"
+cask "hiddenbar"
+cask "iterm2"
+cask "obsidian"
+cask "raycast"
+cask "slack"
+cask "telegram"
+cask "viscosity"
+cask "visual-studio-code"
 
 # Mac App Store
 mas "Bear", id: 1091189122
