@@ -40,11 +40,13 @@ Bootstrap order on fresh Mac:
 1. `run_once_before_01-install-homebrew.sh.tmpl` - installs Homebrew
 2. `run_once_before_02-install-oh-my-zsh.sh.tmpl` - installs oh-my-zsh
 3. `run_onchange_after_02-brew-bundle.sh.tmpl` - runs `brew bundle --global` when Brewfile changes
-4. Dotfiles applied: `.gitconfig`, `.zshrc`, `.Brewfile`
+4. `run_onchange_after_03-mise-install.sh.tmpl` - installs mise tools (Python first, then others)
+5. Dotfiles applied: `.gitconfig`, `.zshrc`, `.Brewfile`, `.config/mise/config.toml`
 
 ## Key Files
 
 - `dot_Brewfile` → `~/.Brewfile` - Homebrew packages and casks
+- `dot_config/mise/config.toml` → `~/.config/mise/config.toml` - mise tools (gcloud, helm, kubectl, terraform, etc.)
 - `dot_gitconfig.tmpl` → `~/.gitconfig` - Git config using `gh` for credentials
-- `dot_zshrc` → `~/.zshrc` - Shell config with oh-my-zsh
+- `dot_zshrc` → `~/.zshrc` - Shell config with oh-my-zsh and mise activation
 - `.chezmoiignore` - files to exclude from target (CLAUDE.md, README.md)

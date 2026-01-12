@@ -1,0 +1,22 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+set -euo pipefail
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Install Python first
+mise install python --yes
+
+# Set CLOUDSDK_PYTHON to use mise-managed Python
+export CLOUDSDK_PYTHON="$(mise which python)"
+export PATH="$(dirname "$(mise which python)"):$PATH"
+
+# Install remaining tools
+mise install --yes
+
+# Recreate gcloud virtenv with mise Python
+rm -rf ~/.config/gcloud/virtenv
+eval "$(mise activate bash)"
+gcloud info --quiet >/dev/null 2>&1 || true
+{{ end -}}

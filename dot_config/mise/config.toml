@@ -1,0 +1,11 @@
+[tools]
+gcloud = "551"
+helm = "3.19"
+jq = "1.8"
+k9s = "0.50"
+kubectl = "1.35"
+kustomize = "5.8"
+python = "3.14"
+terraform = "1.14"
+terragrunt = "0.97"
+yq = "4.50"

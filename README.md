@@ -8,6 +8,20 @@ My dotfiles managed with [chezmoi](https://chezmoi.io).
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply bborysenko
 ```
 
+## What's Included
+
+### Homebrew Packages
+
+Installed via `~/.Brewfile` - see [dot_Brewfile](dot_Brewfile) for full list.
+
+### CLI Tools (via mise)
+
+Managed by [mise](https://mise.jdx.dev/) for version pinning:
+
+- gcloud, helm, jq, k9s, kubectl, kustomize, python, terraform, terragrunt, yq
+
+See [dot_config/mise/config.toml](dot_config/mise/config.toml) for versions.
+
 ## After Bootstrap
 
 Manual steps that can't be easily automated. Since clean installs are rare, this is just a reference to not miss anything.
@@ -72,9 +86,11 @@ Sign in to personal account.
 
 Import VPN configurations.
 
-### VS Code
+### Visual Studio Code
 
-Sign in for settings sync.
+1. Open Settings Sync (Cmd+Shift+P → "Settings Sync: Backup and Sync Settings...")
+2. Sign in with GitHub account
+3. Choose what to sync (settings, keybindings, extensions, snippets)
 
 ### iTerm2
 
@@ -102,4 +118,7 @@ chezmoi add ~/.config/some/file
 # Push changes
 chezmoi cd
 git add -A && git commit -m "update" && git push
+
+# Upgrade mise tools
+mise upgrade
 ```
