@@ -1,0 +1,11 @@
+[tools]
+{{ range .mise.tools }}
+{{- if not (has . $.mise.exclude) }}
+{{- $version := index $.mise.versions . | default "latest" }}
+{{ . }} = "{{ $version }}"
+{{- end }}
+{{- end }}
+{{ range .mise.extra }}
+{{- $version := index $.mise.versions . | default "latest" }}
+{{ . }} = "{{ $version }}"
+{{- end }}

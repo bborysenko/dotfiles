@@ -1,0 +1,29 @@
+# CLI
+{{ range .brews.formulas }}
+{{- if not (has . $.brews.exclude.formulas) }}
+brew "{{ . }}"
+{{- end }}
+{{- end }}
+{{ range .brews.extra.formulas }}
+brew "{{ . }}"
+{{- end }}
+
+# Apps
+{{ range .brews.casks }}
+{{- if not (has . $.brews.exclude.casks) }}
+cask "{{ . }}"
+{{- end }}
+{{- end }}
+{{ range .brews.extra.casks }}
+cask "{{ . }}"
+{{- end }}
+
+# Mac App Store
+{{ range .brews.mas }}
+{{- if not (has .name $.brews.exclude.mas) }}
+mas "{{ .name }}", id: {{ .id }}
+{{- end }}
+{{- end }}
+{{ range .brews.extra.mas }}
+mas "{{ .name }}", id: {{ .id }}
+{{- end }}

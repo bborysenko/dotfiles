@@ -1,0 +1,58 @@
+mise:
+  tools:
+    - gcloud
+    - helm
+    - jq
+    - k9s
+    - kubectl
+    - kustomize
+    - python
+    - terraform
+    - terragrunt
+    - yq
+
+  exclude: []
+
+  extra: []
+
+  # Override versions (default is "latest")
+  # Python pinned to 3.14 for gcloud compatibility (supports 3.10-3.14)
+  versions:
+    python: "3.14"
+
+brews:
+  formulas:
+    - chezmoi
+    - gh
+    - git
+    - mas
+    - mise
+    - tree
+
+  casks:
+    - claude-code
+    - claude
+    - cleanshot
+    - google-chrome
+    - hiddenbar
+    - iterm2
+    - obsidian
+    - raycast
+    - slack
+    - telegram
+    - viscosity
+    - visual-studio-code
+
+  mas:
+    - name: Bear
+      id: 1091189122
+
+  exclude:
+    formulas: []
+    casks: []
+    mas: []
+
+  extra:
+    formulas: []
+    casks: []
+    mas: []

@@ -12,15 +12,53 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply bborysenko
 
 ### Homebrew Packages
 
-Installed via `~/.Brewfile` - see [dot_Brewfile](dot_Brewfile) for full list.
+Installed via `~/.Brewfile`. Common packages are defined in [.chezmoidata.yaml](.chezmoidata.yaml).
+
+#### Device-Specific Packages
+
+Each device can customize packages via `~/.config/chezmoi/chezmoi.yaml`:
+
+```yaml
+data:
+  brews:
+    exclude:          # Remove from defaults
+      formulas: []
+      casks:
+        - cleanshot   # Can't install on this device
+      mas: []
+    extra:            # Add to defaults
+      formulas:
+        - awscli
+        - terraform
+      casks:
+        - docker
+      mas:
+        - name: "Xcode"
+          id: 497799835
+```
+
+Preview the result with `chezmoi cat ~/.Brewfile`.
 
 ### CLI Tools (via mise)
 
-Managed by [mise](https://mise.jdx.dev/) for version pinning:
+Managed by [mise](https://mise.jdx.dev/). Common tools are defined in [.chezmoidata.yaml](.chezmoidata.yaml) with `latest` version by default.
 
-- gcloud, helm, jq, k9s, kubectl, kustomize, python, terraform, terragrunt, yq
+#### Device-Specific Tools
 
-See [dot_config/mise/config.toml](dot_config/mise/config.toml) for versions.
+Customize via `~/.config/chezmoi/chezmoi.yaml`:
+
+```yaml
+data:
+  mise:
+    exclude:
+      - terraform       # Don't need on this device
+    extra:
+      - node            # Additional tool
+    versions:
+      python: "3.12"    # Pin specific version instead of latest
+```
+
+Preview the result with `chezmoi cat ~/.config/mise/config.toml`.
 
 ## After Bootstrap
 
