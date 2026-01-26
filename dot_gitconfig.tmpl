@@ -11,8 +11,6 @@
 [push]
     autoSetupRemote = true
 
-[credential "https://github.com"]
-    helper = !/opt/homebrew/bin/gh auth git-credential
-
-[credential "https://gist.github.com"]
-    helper = !/opt/homebrew/bin/gh auth git-credential
+# Use SSH for GitHub (auto-converts HTTPS URLs to SSH)
+[url "git@github.com:"]
+    insteadOf = https://github.com/

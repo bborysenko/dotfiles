@@ -85,11 +85,13 @@ Manual steps that can't be easily automated. Since clean installs are rare, this
 
 ### GitHub
 
-Sign in to GitHub in Chrome first, then:
+SSH key is auto-generated during bootstrap (`~/.ssh/github_<hostname>`). Complete setup:
 
 ```bash
 gh auth login
 ```
+
+Choose SSH protocol when prompted - it will upload your key automatically.
 
 ### Claude
 

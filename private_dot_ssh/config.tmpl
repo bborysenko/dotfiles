@@ -1,0 +1,6 @@
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/github_{{ .chezmoi.hostname }}
+    AddKeysToAgent yes
+    UseKeychain yes

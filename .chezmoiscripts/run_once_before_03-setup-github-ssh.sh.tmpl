@@ -1,0 +1,25 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -euo pipefail
+
+KEY_NAME="github_{{ .chezmoi.hostname }}"
+KEY_PATH="$HOME/.ssh/$KEY_NAME"
+
+# Generate SSH key if it doesn't exist
+if [[ ! -f "$KEY_PATH" ]]; then
+    echo "Generating SSH key: $KEY_PATH"
+    mkdir -p "$HOME/.ssh"
+    chmod 700 "$HOME/.ssh"
+    ssh-keygen -t ed25519 -f "$KEY_PATH" -N "" -C "{{ .chezmoi.hostname }}"
+    echo "SSH key generated."
+fi
+
+# Add key to macOS keychain (will persist across reboots)
+if ! ssh-add -l 2>/dev/null | grep -q "$KEY_NAME"; then
+    echo "Adding SSH key to keychain..."
+    ssh-add --apple-use-keychain "$KEY_PATH" 2>/dev/null || ssh-add -K "$KEY_PATH" 2>/dev/null || ssh-add "$KEY_PATH"
+fi
+
+echo ""
+echo "To complete GitHub SSH setup, run: gh auth login"
+{{ end -}}
