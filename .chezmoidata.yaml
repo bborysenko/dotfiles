@@ -53,6 +53,7 @@ brews:
     mas: []
 
   extra:
+    taps: []
     formulas: []
     casks: []
     mas: []

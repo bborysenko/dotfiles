@@ -27,9 +27,11 @@ data:
         - cleanshot   # Can't install on this device
       mas: []
     extra:            # Add to defaults
+      taps:
+        - name: nullstone-io/nullstone
+          url: https://github.com/nullstone-io/nullstone.git
       formulas:
-        - awscli
-        - terraform
+        - nullstone-io/nullstone/nullstone  # use full path for tap formulas
       casks:
         - docker
       mas:

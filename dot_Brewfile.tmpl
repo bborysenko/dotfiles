@@ -1,3 +1,8 @@
+# Taps
+{{ range .brews.extra.taps }}
+tap "{{ .name }}"{{ if .url }}, "{{ .url }}"{{ end }}
+{{- end }}
+
 # CLI
 {{ range .brews.formulas }}
 {{- if not (has . $.brews.exclude.formulas) }}
