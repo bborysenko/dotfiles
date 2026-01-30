@@ -79,7 +79,37 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+{{ $plugins := list "git" -}}
+
+{{- /* kubectl */ -}}
+{{- $in_mise := or (has "kubectl" .mise.tools) (has "kubectl" .mise.extra) -}}
+{{- $in_brew := or (has "kubectl" .brews.formulas) (has "kubectl" .brews.extra.formulas) -}}
+{{- if and (or $in_mise $in_brew) (not (has "kubectl" .mise.exclude)) (not (has "kubectl" .brews.exclude.formulas)) -}}
+{{- $plugins = append $plugins "kubectl" -}}
+{{- end -}}
+
+{{- /* k9s */ -}}
+{{- $in_mise := or (has "k9s" .mise.tools) (has "k9s" .mise.extra) -}}
+{{- $in_brew := or (has "k9s" .brews.formulas) (has "k9s" .brews.extra.formulas) -}}
+{{- if and (or $in_mise $in_brew) (not (has "k9s" .mise.exclude)) (not (has "k9s" .brews.exclude.formulas)) -}}
+{{- $plugins = append $plugins "k9s" -}}
+{{- end -}}
+
+{{- /* helm */ -}}
+{{- $in_mise := or (has "helm" .mise.tools) (has "helm" .mise.extra) -}}
+{{- $in_brew := or (has "helm" .brews.formulas) (has "helm" .brews.extra.formulas) -}}
+{{- if and (or $in_mise $in_brew) (not (has "helm" .mise.exclude)) (not (has "helm" .brews.exclude.formulas)) -}}
+{{- $plugins = append $plugins "helm" -}}
+{{- end -}}
+
+{{- /* terraform */ -}}
+{{- $in_mise := or (has "terraform" .mise.tools) (has "terraform" .mise.extra) -}}
+{{- $in_brew := or (has "terraform" .brews.formulas) (has "terraform" .brews.extra.formulas) -}}
+{{- if and (or $in_mise $in_brew) (not (has "terraform" .mise.exclude)) (not (has "terraform" .brews.exclude.formulas)) -}}
+{{- $plugins = append $plugins "terraform" -}}
+{{- end -}}
+
+plugins=({{ $plugins | join " " }})
 
 source $ZSH/oh-my-zsh.sh
 
