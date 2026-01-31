@@ -1,3 +1,11 @@
+{{- /* orbstack */ -}}
+{{- $in_brew := or (has "orbstack" .brews.casks) (has "orbstack" .brews.extra.casks) -}}
+{{- if and $in_brew (not (has "orbstack" .brews.exclude.casks)) }}
+# Added by OrbStack: 'orb' SSH host for Linux machines
+# This only works if it's at the top of ssh_config (before any Host blocks).
+Include ~/.orbstack/ssh/config
+
+{{ end -}}
 Host github.com
     HostName github.com
     User git
