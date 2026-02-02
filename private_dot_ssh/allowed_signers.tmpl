@@ -1,0 +1,1 @@
+{{ .git.email }} {{ output "cat" (joinPath .chezmoi.homeDir ".ssh" (printf "github_%s.pub" .chezmoi.hostname)) | trim }}

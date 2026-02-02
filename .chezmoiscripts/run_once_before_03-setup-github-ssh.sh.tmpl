@@ -21,5 +21,17 @@ if ! ssh-add -l 2>/dev/null | grep -q "$KEY_NAME"; then
 fi
 
 echo ""
-echo "To complete GitHub SSH setup, run: gh auth login"
+echo "=== GitHub SSH Setup ==="
+echo "Run the following commands to complete setup:"
+echo ""
+echo "  # 1. Authenticate with GitHub"
+echo "  gh auth login"
+echo ""
+echo "  # 2. Upload SSH key for authentication (pull/push)"
+echo "  gh ssh-key add ~/.ssh/$KEY_NAME.pub --title {{ .chezmoi.hostname }}"
+echo ""
+echo "  # 3. Upload SSH key for commit signing"
+echo "  gh auth refresh -s admin:ssh_signing_key"
+echo "  gh ssh-key add ~/.ssh/$KEY_NAME.pub --title {{ .chezmoi.hostname }} --type signing"
+echo ""
 {{ end -}}
