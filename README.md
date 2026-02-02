@@ -90,10 +90,18 @@ Manual steps that can't be easily automated. Since clean installs are rare, this
 SSH key is auto-generated during bootstrap (`~/.ssh/github_<hostname>`). Complete setup:
 
 ```bash
+# 1. Authenticate with GitHub
 gh auth login
+
+# 2. Upload SSH key for authentication (pull/push)
+gh ssh-key add ~/.ssh/github_$(hostname -s).pub --title $(hostname -s)
+
+# 3. Upload SSH key for commit signing
+gh auth refresh -s admin:ssh_signing_key
+gh ssh-key add ~/.ssh/github_$(hostname -s).pub --title $(hostname -s) --type signing
 ```
 
-Choose SSH protocol when prompted - it will upload your key automatically.
+Git is pre-configured to sign commits with SSH. After uploading the signing key, your commits will show as "Verified" on GitHub.
 
 ### Claude
 
