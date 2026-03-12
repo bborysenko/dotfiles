@@ -5,62 +5,54 @@ My dotfiles managed with [chezmoi](https://chezmoi.io).
 ## Quick Start
 
 ```bash
+xcode-select --install  # git is required; wait for install to complete
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply bborysenko
 ```
 
 ## What's Included
 
-### Homebrew Packages
+### Device Profiles
 
-Installed via `~/.Brewfile`. Common packages are defined in [.chezmoidata.yaml](.chezmoidata.yaml).
+Each device has a profile in [.chezmoidata.yaml](.chezmoidata.yaml) that defines exactly what gets installed — Homebrew packages, mise tools, and git config. Profiles are keyed by a SHA256 hash of the Mac serial number (first 8 chars) for privacy. No profile = nothing installed.
 
-#### Device-Specific Packages
+[.chezmoi.yaml.tmpl](.chezmoi.yaml.tmpl) automatically selects the matching profile at `chezmoi init` time.
 
-Each device can customize packages via `~/.config/chezmoi/chezmoi.yaml`:
+#### Adding a New Device
+
+1. Get your profile ID:
+
+```bash
+system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8
+```
+
+2. Add a profile entry to `.chezmoidata.yaml`:
 
 ```yaml
-data:
-  brews:
-    exclude:          # Remove from defaults
-      formulas: []
-      casks:
-        - cleanshot   # Can't install on this device
-      mas: []
-    extra:            # Add to defaults
+profiles:
+  a1b2c3d4:
+    git:
+      name: Your Name
+      email: your@email.com
+    brews:
       taps:
-        - name: nullstone-io/nullstone
-          url: https://github.com/nullstone-io/nullstone.git
-      formulas:
-        - nullstone-io/nullstone/nullstone  # use full path for tap formulas
-      casks:
-        - docker
+        - name: some/tap
+      formulas: [chezmoi, gh, git, mas, mise, tree]
+      casks: [google-chrome, iterm2, visual-studio-code]
       mas:
-        - name: "Xcode"
-          id: 497799835
+        - name: Bear
+          id: 1091189122
+    mise:
+      tools: [python:3.14, jq, yq]  # use tool:version to pin
 ```
 
-Preview the result with `chezmoi cat ~/.Brewfile`.
+3. Re-init and apply:
 
-### CLI Tools (via mise)
-
-Managed by [mise](https://mise.jdx.dev/). Common tools are defined in [.chezmoidata.yaml](.chezmoidata.yaml) with `latest` version by default.
-
-#### Device-Specific Tools
-
-Customize via `~/.config/chezmoi/chezmoi.yaml`:
-
-```yaml
-data:
-  mise:
-    exclude:
-      - terraform       # Don't need on this device
-    extra:
-      - node            # Additional tool
-    versions:
-      python: "3.12"    # Pin specific version instead of latest
+```bash
+chezmoi init
+chezmoi apply
 ```
 
-Preview the result with `chezmoi cat ~/.config/mise/config.toml`.
+Preview results with `chezmoi cat ~/.Brewfile` or `chezmoi cat ~/.config/mise/config.toml`.
 
 ## After Bootstrap
 

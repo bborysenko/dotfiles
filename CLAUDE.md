@@ -43,53 +43,51 @@ Bootstrap order on fresh Mac:
 4. `run_onchange_after_03-mise-install.sh.tmpl` - installs mise tools (Python first, then others)
 5. Dotfiles applied: `.gitconfig`, `.zshrc`, `.Brewfile`, `.config/mise/config.toml`
 
-## Conditional Templates
+## Device Profiles
 
-Templates use data from `.chezmoidata.yaml` to conditionally include content based on installed packages.
+Each device has a profile in `.chezmoidata.yaml` keyed by `SHA256(Mac serial number)[:8]`. Profiles are the source of truth — they define exactly what gets installed. No profile = nothing installed.
+
+`.chezmoi.yaml.tmpl` computes the hash at `chezmoi init` time, looks up the profile, and generates `~/.config/chezmoi/chezmoi.yaml` which overrides the empty defaults.
 
 ### Data Structure
 
-```yaml
-brews:
-  formulas: [...]    # CLI tools installed via brew
-  casks: [...]       # GUI apps installed via brew cask
-  mas:               # Mac App Store apps
-    - name: App Name
-      id: 123456
-  exclude:
-    formulas: []     # Device-specific exclusions
-    casks: []
-    mas: []
-  extra:
-    formulas: []     # Device-specific additions
-    casks: []
-    mas: []
+Top-level keys are empty defaults. Profiles provide all values:
 
-mise:
-  tools: [...]       # Tools managed by mise
-  exclude: []
-  extra: []
+```yaml
+# Defaults (empty)
+git: { name: "", email: "" }
+brews: { taps: [], formulas: [], casks: [], mas: [] }
+mise: { tools: [], versions: {} }
+
+# Each profile defines exactly what to install
+profiles:
+  <hash>:
+    git:
+      name: Name
+      email: email@example.com
+    brews:
+      taps: [{ name: "org/tap" }]
+      formulas: [chezmoi, gh, git]
+      casks: [google-chrome, iterm2]
+      mas: [{ name: "App", id: 123456 }]
+    mise:
+      tools: [python:3.14, jq]  # use tool:version to pin, default is latest
 ```
 
 ### Pattern for Conditional Blocks
 
-Check if a package will be installed (in main list OR extra) AND not excluded:
+Check if a package is in the list (lists are the source of truth, no exclude/extra):
 
 ```gotemplate
-{{- /* package-name */ -}}
-{{- $in_brew := or (has "package" .brews.casks) (has "package" .brews.extra.casks) -}}
-{{- if and $in_brew (not (has "package" .brews.exclude.casks)) }}
-# Content only included if package is installed
+{{- if has "orbstack" .brews.casks }}
+# Content only included if orbstack is installed
 {{- end }}
 ```
 
-For tools that can come from either mise or brew (like kubectl):
+For tools that can come from either mise or brew:
 
 ```gotemplate
-{{- /* kubectl */ -}}
-{{- $in_mise := or (has "kubectl" .mise.tools) (has "kubectl" .mise.extra) -}}
-{{- $in_brew := or (has "kubectl" .brews.formulas) (has "kubectl" .brews.extra.formulas) -}}
-{{- if and (or $in_mise $in_brew) (not (has "kubectl" .mise.exclude)) (not (has "kubectl" .brews.exclude.formulas)) -}}
+{{- if or (has "kubectl" .mise.tools) (has "kubectl" .brews.formulas) -}}
 # Content only included if kubectl is installed
 {{- end -}}
 ```
@@ -105,4 +103,5 @@ For tools that can come from either mise or brew (like kubectl):
 - `dot_config/mise/config.toml` → `~/.config/mise/config.toml` - mise tools (gcloud, helm, kubectl, terraform, etc.)
 - `dot_gitconfig.tmpl` → `~/.gitconfig` - Git config using `gh` for credentials
 - `dot_zshrc` → `~/.zshrc` - Shell config with oh-my-zsh and mise activation
+- `.chezmoi.yaml.tmpl` → `~/.config/chezmoi/chezmoi.yaml` - selects device profile and generates config
 - `.chezmoiignore` - files to exclude from target (CLAUDE.md, README.md)

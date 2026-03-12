@@ -1,64 +1,68 @@
+# Defaults (empty). Each device gets its config from a profile below.
 git:
-  name: Borys Borysenko
-  email: 3684918+bborysenko@users.noreply.github.com
-
-mise:
-  tools:
-    - gcloud
-    - helm
-    - jq
-    - k9s
-    - kubectl
-    - kustomize
-    - python
-    - terraform
-    - terragrunt
-    - yq
-
-  exclude: []
-
-  extra: []
-
-  # Override versions (default is "latest")
-  # Python pinned to 3.14 for gcloud compatibility (supports 3.10-3.14)
-  versions:
-    python: "3.14"
+  name: ""
+  email: ""
 
 brews:
-  formulas:
-    - chezmoi
-    - gh
-    - git
-    - mas
-    - mise
-    - tree
+  taps: []
+  formulas: []
+  casks: []
+  mas: []
 
-  casks:
-    - claude-code
-    - claude
-    - cleanshot
-    - google-chrome
-    - hiddenbar
-    - iterm2
-    - obsidian
-    - orbstack
-    - raycast
-    - slack
-    - telegram
-    - viscosity
-    - visual-studio-code
+mise:
+  tools: []
+  versions: {}
 
-  mas:
-    - name: Bear
-      id: 1091189122
-
-  exclude:
-    formulas: []
-    casks: []
-    mas: []
-
-  extra:
-    taps: []
-    formulas: []
-    casks: []
-    mas: []
+# Per-device profiles keyed by SHA256(serial)[:8].
+# Each profile is the source of truth for what gets installed on that device.
+# No profile = nothing installed.
+#
+# To find your profile ID:
+#   system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8
+profiles:
+  56f82f1e:
+    git:
+      name: Borys Borysenko
+      email: 3684918+bborysenko@users.noreply.github.com
+    brews:
+      taps:
+        - name: hamed-elfayome/claude-usage
+      formulas:
+        - chezmoi
+        - gh
+        - git
+        - mas
+        - mise
+        - tree
+      casks:
+        - claude-code
+        - claude
+        - hamed-elfayome/claude-usage/claude-usage-tracker
+        - cleanshot
+        - google-chrome
+        - hiddenbar
+        - iterm2
+        - obsidian
+        - orbstack
+        - raycast
+        - slack
+        - telegram
+        - viscosity
+        - visual-studio-code
+      mas:
+        - name: Bear
+          id: 1091189122
+    mise:
+      tools:
+        - gcloud
+        - helm
+        - jq
+        - k9s
+        - kubectl
+        - kustomize
+        - node
+        - pulumi
+        - python:3.14  # pinned for gcloud compatibility (supports 3.10-3.14)
+        - terraform
+        - terragrunt
+        - yq

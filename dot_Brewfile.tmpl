@@ -1,34 +1,19 @@
 # Taps
-{{ range .brews.extra.taps }}
-tap "{{ .name }}"{{ if .url }}, "{{ .url }}"{{ end }}
+{{- range .brews.taps }}
+tap "{{ .name }}"{{ if hasKey . "url" }}, "{{ .url }}"{{ end }}
 {{- end }}
 
 # CLI
-{{ range .brews.formulas }}
-{{- if not (has . $.brews.exclude.formulas) }}
-brew "{{ . }}"
-{{- end }}
-{{- end }}
-{{ range .brews.extra.formulas }}
+{{- range .brews.formulas }}
 brew "{{ . }}"
 {{- end }}
 
 # Apps
-{{ range .brews.casks }}
-{{- if not (has . $.brews.exclude.casks) }}
-cask "{{ . }}"
-{{- end }}
-{{- end }}
-{{ range .brews.extra.casks }}
+{{- range .brews.casks }}
 cask "{{ . }}"
 {{- end }}
 
 # Mac App Store
-{{ range .brews.mas }}
-{{- if not (has .name $.brews.exclude.mas) }}
-mas "{{ .name }}", id: {{ .id }}
-{{- end }}
-{{- end }}
-{{ range .brews.extra.mas }}
+{{- range .brews.mas }}
 mas "{{ .name }}", id: {{ .id }}
 {{- end }}

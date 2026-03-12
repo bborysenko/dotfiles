@@ -5,8 +5,8 @@ set -euo pipefail
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-{{- $hasPython := and (has "python" .mise.tools) (not (has "python" .mise.exclude)) }}
-{{- $hasGcloud := and (has "gcloud" .mise.tools) (not (has "gcloud" .mise.exclude)) }}
+{{- $hasPython := has "python" .mise.tools }}
+{{- $hasGcloud := has "gcloud" .mise.tools }}
 
 {{ if $hasPython }}
 # Install Python first (required by gcloud)
