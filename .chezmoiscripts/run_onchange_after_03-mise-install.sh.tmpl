@@ -1,12 +1,22 @@
 {{- if eq .chezmoi.os "darwin" -}}
+{{- $id := output "sh" "-c" "system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8" | trim -}}
+{{- $p := dig $id (dict) .profiles -}}
+{{- $miseTools := list -}}
+{{- range dig "mise" "tools" list $p -}}
+{{-   if contains ":" . -}}
+{{-     $miseTools = append $miseTools (split ":" .)._0 -}}
+{{-   else -}}
+{{-     $miseTools = append $miseTools . -}}
+{{-   end -}}
+{{- end -}}
 #!/bin/bash
-# mise config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}-{{ .mise | toJson | sha256sum }}
+# mise config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}-{{ include ".chezmoidata.yaml" | sha256sum }}
 set -euo pipefail
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-{{- $hasPython := has "python" .mise.tools }}
-{{- $hasGcloud := has "gcloud" .mise.tools }}
+{{- $hasPython := has "python" $miseTools }}
+{{- $hasGcloud := has "gcloud" $miseTools }}
 
 {{ if $hasPython }}
 # Install Python first (required by gcloud)

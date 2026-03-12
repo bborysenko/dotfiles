@@ -1,6 +1,8 @@
+{{- $id := output "sh" "-c" "system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8" | trim -}}
+{{- $p := dig $id (dict) .profiles -}}
 [user]
-    name = {{ .git.name }}
-    email = {{ .git.email }}
+    name = {{ dig "git" "name" "" $p }}
+    email = {{ dig "git" "email" "" $p }}
     signingkey = ~/.ssh/github_{{ .chezmoi.hostname }}.pub
 
 [gpg]

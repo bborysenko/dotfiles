@@ -1,19 +1,21 @@
+{{- $id := output "sh" "-c" "system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8" | trim -}}
+{{- $p := dig $id (dict) .profiles -}}
 # Taps
-{{- range .brews.taps }}
+{{- range dig "brews" "taps" list $p }}
 tap "{{ .name }}"{{ if hasKey . "url" }}, "{{ .url }}"{{ end }}
 {{- end }}
 
 # CLI
-{{- range .brews.formulas }}
+{{- range dig "brews" "formulas" list $p }}
 brew "{{ . }}"
 {{- end }}
 
 # Apps
-{{- range .brews.casks }}
+{{- range dig "brews" "casks" list $p }}
 cask "{{ . }}"
 {{- end }}
 
 # Mac App Store
-{{- range .brews.mas }}
+{{- range dig "brews" "mas" list $p }}
 mas "{{ .name }}", id: {{ .id }}
 {{- end }}

@@ -1,5 +1,7 @@
+{{- $id := output "sh" "-c" "system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8" | trim -}}
+{{- $p := dig $id (dict) .profiles -}}
 {{- /* orbstack */ -}}
-{{- if has "orbstack" .brews.casks }}
+{{- if has "orbstack" (dig "brews" "casks" list $p) }}
 # Added by OrbStack: 'orb' SSH host for Linux machines
 # This only works if it's at the top of ssh_config (before any Host blocks).
 Include ~/.orbstack/ssh/config

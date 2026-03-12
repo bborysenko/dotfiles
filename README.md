@@ -15,7 +15,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply bborysenko
 
 Each device has a profile in [.chezmoidata.yaml](.chezmoidata.yaml) that defines exactly what gets installed — Homebrew packages, mise tools, and git config. Profiles are keyed by a SHA256 hash of the Mac serial number (first 8 chars) for privacy. No profile = nothing installed.
 
-[.chezmoi.yaml.tmpl](.chezmoi.yaml.tmpl) automatically selects the matching profile at `chezmoi init` time.
+Each template resolves the matching profile inline — changes take effect immediately on `chezmoi apply`.
 
 #### Adding a New Device
 
@@ -45,10 +45,9 @@ profiles:
       tools: [python:3.14, jq, yq]  # use tool:version to pin
 ```
 
-3. Re-init and apply:
+3. Apply:
 
 ```bash
-chezmoi init
 chezmoi apply
 ```
 

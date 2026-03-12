@@ -1,3 +1,14 @@
+{{- $id := output "sh" "-c" "system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8" | trim -}}
+{{- $p := dig $id (dict) .profiles -}}
+{{- $miseTools := list -}}
+{{- range dig "mise" "tools" list $p -}}
+{{-   if contains ":" . -}}
+{{-     $miseTools = append $miseTools (split ":" .)._0 -}}
+{{-   else -}}
+{{-     $miseTools = append $miseTools . -}}
+{{-   end -}}
+{{- end -}}
+{{- $brewFormulas := dig "brews" "formulas" list $p -}}
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -83,22 +94,22 @@ ZSH_THEME="robbyrussell"
 {{ $plugins := list "git" -}}
 
 {{- /* kubectl */ -}}
-{{- if or (has "kubectl" .mise.tools) (has "kubectl" .brews.formulas) -}}
+{{- if or (has "kubectl" $miseTools) (has "kubectl" $brewFormulas) -}}
 {{- $plugins = append $plugins "kubectl" -}}
 {{- end -}}
 
 {{- /* k9s */ -}}
-{{- if or (has "k9s" .mise.tools) (has "k9s" .brews.formulas) -}}
+{{- if or (has "k9s" $miseTools) (has "k9s" $brewFormulas) -}}
 {{- $plugins = append $plugins "k9s" -}}
 {{- end -}}
 
 {{- /* helm */ -}}
-{{- if or (has "helm" .mise.tools) (has "helm" .brews.formulas) -}}
+{{- if or (has "helm" $miseTools) (has "helm" $brewFormulas) -}}
 {{- $plugins = append $plugins "helm" -}}
 {{- end -}}
 
 {{- /* terraform */ -}}
-{{- if or (has "terraform" .mise.tools) (has "terraform" .brews.formulas) -}}
+{{- if or (has "terraform" $miseTools) (has "terraform" $brewFormulas) -}}
 {{- $plugins = append $plugins "terraform" -}}
 {{- end -}}
 

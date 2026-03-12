@@ -47,19 +47,13 @@ Bootstrap order on fresh Mac:
 
 Each device has a profile in `.chezmoidata.yaml` keyed by `SHA256(Mac serial number)[:8]`. Profiles are the source of truth — they define exactly what gets installed. No profile = nothing installed.
 
-`.chezmoi.yaml.tmpl` computes the hash at `chezmoi init` time, looks up the profile, and generates `~/.config/chezmoi/chezmoi.yaml` which overrides the empty defaults.
+Each template resolves the profile inline by computing the serial hash and looking up `.profiles` from `.chezmoidata.yaml`. Changes to profiles take effect immediately on `chezmoi apply` (no `chezmoi init` needed).
 
 ### Data Structure
 
-Top-level keys are empty defaults. Profiles provide all values:
+`.chezmoidata.yaml` contains only the `profiles` map:
 
 ```yaml
-# Defaults (empty)
-git: { name: "", email: "" }
-brews: { taps: [], formulas: [], casks: [], mas: [] }
-mise: { tools: [], versions: {} }
-
-# Each profile defines exactly what to install
 profiles:
   <hash>:
     git:
@@ -74,21 +68,46 @@ profiles:
       tools: [python:3.14, jq]  # use tool:version to pin, default is latest
 ```
 
+### Profile Resolution Pattern
+
+Each template starts with a 2-line preamble to resolve the profile:
+
+```gotemplate
+{{- $id := output "sh" "-c" "system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8" | trim -}}
+{{- $p := dig $id (dict) .profiles -}}
+```
+
+Then access profile data with `dig`:
+
+```gotemplate
+{{- range dig "brews" "formulas" list $p }}
+brew "{{ . }}"
+{{- end }}
+```
+
 ### Pattern for Conditional Blocks
 
 Check if a package is in the list (lists are the source of truth, no exclude/extra):
 
 ```gotemplate
-{{- if has "orbstack" .brews.casks }}
+{{- if has "orbstack" (dig "brews" "casks" list $p) }}
 # Content only included if orbstack is installed
 {{- end }}
 ```
 
-For tools that can come from either mise or brew:
+For mise tools, parse `tool:version` entries first to get plain names:
 
 ```gotemplate
-{{- if or (has "kubectl" .mise.tools) (has "kubectl" .brews.formulas) -}}
-# Content only included if kubectl is installed
+{{- $miseTools := list -}}
+{{- range dig "mise" "tools" list $p -}}
+{{-   if contains ":" . -}}
+{{-     $miseTools = append $miseTools (split ":" .)._0 -}}
+{{-   else -}}
+{{-     $miseTools = append $miseTools . -}}
+{{-   end -}}
+{{- end -}}
+{{- if has "kubectl" $miseTools -}}
+# kubectl is installed
 {{- end -}}
 ```
 
@@ -99,9 +118,8 @@ For tools that can come from either mise or brew:
 
 ## Key Files
 
-- `dot_Brewfile` → `~/.Brewfile` - Homebrew packages and casks
-- `dot_config/mise/config.toml` → `~/.config/mise/config.toml` - mise tools (gcloud, helm, kubectl, terraform, etc.)
+- `dot_Brewfile.tmpl` → `~/.Brewfile` - Homebrew packages and casks
+- `dot_config/mise/config.toml.tmpl` → `~/.config/mise/config.toml` - mise tools (gcloud, helm, kubectl, terraform, etc.)
 - `dot_gitconfig.tmpl` → `~/.gitconfig` - Git config using `gh` for credentials
-- `dot_zshrc` → `~/.zshrc` - Shell config with oh-my-zsh and mise activation
-- `.chezmoi.yaml.tmpl` → `~/.config/chezmoi/chezmoi.yaml` - selects device profile and generates config
+- `dot_zshrc.tmpl` → `~/.zshrc` - Shell config with oh-my-zsh and mise activation
 - `.chezmoiignore` - files to exclude from target (CLAUDE.md, README.md)

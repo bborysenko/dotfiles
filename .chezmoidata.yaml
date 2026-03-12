@@ -1,18 +1,3 @@
-# Defaults (empty). Each device gets its config from a profile below.
-git:
-  name: ""
-  email: ""
-
-brews:
-  taps: []
-  formulas: []
-  casks: []
-  mas: []
-
-mise:
-  tools: []
-  versions: {}
-
 # Per-device profiles keyed by SHA256(serial)[:8].
 # Each profile is the source of truth for what gets installed on that device.
 # No profile = nothing installed.
