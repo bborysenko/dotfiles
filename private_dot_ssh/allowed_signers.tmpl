@@ -1,2 +1,1 @@
-{{- $p := dig .profile (dict) .profiles -}}
-{{ dig "git" "email" "" $p }} {{ output "cat" (joinPath .chezmoi.homeDir ".ssh" (printf "github_%s.pub" .chezmoi.hostname)) | trim }}
+{{ .git.email }} {{ output "cat" (joinPath .chezmoi.homeDir ".ssh" (printf "github_%s.pub" .chezmoi.hostname)) | trim }}

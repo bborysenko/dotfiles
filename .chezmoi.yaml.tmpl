@@ -30,3 +30,6 @@
 data:
     profile: {{ $profile | quote }}
     serial: {{ $serial | quote }}
+    git:
+        name: {{ promptStringOnce . "git.name" "Git user name" "Borys Borysenko" | quote }}
+        email: {{ promptStringOnce . "git.email" "Git user email" "3684918+bborysenko@users.noreply.github.com" | quote }}

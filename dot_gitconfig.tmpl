@@ -1,7 +1,6 @@
-{{- $p := dig .profile (dict) .profiles -}}
 [user]
-    name = {{ dig "git" "name" "" $p }}
-    email = {{ dig "git" "email" "" $p }}
+    name = {{ .git.name }}
+    email = {{ .git.email }}
     signingkey = ~/.ssh/github_{{ .chezmoi.hostname }}.pub
 
 [gpg]
