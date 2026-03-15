@@ -1,20 +1,22 @@
 {{- $p := dig .profile (dict) .profiles -}}
+{{- $brews := dig "brews" (dict) $p -}}
+
 # Taps
-{{- range dig "brews" "taps" list $p }}
+{{- range dig "taps" list $brews }}
 tap "{{ .name }}"{{ if hasKey . "url" }}, "{{ .url }}"{{ end }}
 {{- end }}
 
 # CLI
-{{- range dig "brews" "formulas" list $p }}
+{{- range dig "formulas" list $brews }}
 brew "{{ . }}"
 {{- end }}
 
 # Apps
-{{- range dig "brews" "casks" list $p }}
+{{- range dig "casks" list $brews }}
 cask "{{ . }}"
 {{- end }}
 
 # Mac App Store
-{{- range dig "brews" "mas" list $p }}
+{{- range dig "mas" list $brews }}
 mas "{{ .name }}", id: {{ .id }}
 {{- end }}

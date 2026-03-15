@@ -92,24 +92,15 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 {{ $plugins := list "git" -}}
 
-{{- /* kubectl */ -}}
-{{- if or (has "kubectl" $miseTools) (has "kubectl" $brewFormulas) -}}
-{{- $plugins = append $plugins "kubectl" -}}
-{{- end -}}
-
-{{- /* k9s */ -}}
-{{- if or (has "k9s" $miseTools) (has "k9s" $brewFormulas) -}}
-{{- $plugins = append $plugins "k9s" -}}
-{{- end -}}
-
-{{- /* helm */ -}}
-{{- if or (has "helm" $miseTools) (has "helm" $brewFormulas) -}}
-{{- $plugins = append $plugins "helm" -}}
-{{- end -}}
-
-{{- /* terraform */ -}}
-{{- if or (has "terraform" $miseTools) (has "terraform" $brewFormulas) -}}
-{{- $plugins = append $plugins "terraform" -}}
+{{- range list
+  (dict "tool" "kubectl" "plugin" "kubectl")
+  (dict "tool" "k9s"     "plugin" "k9s")
+  (dict "tool" "helm"    "plugin" "helm")
+  (dict "tool" "terraform" "plugin" "terraform")
+-}}
+{{-   if or (has .tool $miseTools) (has .tool $brewFormulas) -}}
+{{-     $plugins = append $plugins .plugin -}}
+{{-   end -}}
 {{- end -}}
 
 plugins=({{ $plugins | join " " }})
