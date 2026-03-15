@@ -47,7 +47,7 @@ Bootstrap order on fresh Mac:
 
 Each device has a profile in `.chezmoidata.yaml` keyed by `SHA256(Mac serial number)[:8]`. Profiles are the source of truth — they define exactly what gets installed. No profile = nothing installed.
 
-Each template resolves the profile inline by computing the serial hash and looking up `.profiles` from `.chezmoidata.yaml`. Changes to profiles take effect immediately on `chezmoi apply` (no `chezmoi init` needed).
+`.chezmoi.yaml.tmpl` auto-detects the device serial via `ioreg`, hashes it with SHA-256, and exposes the first 8 hex chars as `.profile` in chezmoi's template data. Templates then look up `.profiles` from `.chezmoidata.yaml` using that key. Changes to profiles take effect immediately on `chezmoi apply` (no `chezmoi init` needed).
 
 ### Data Structure
 
@@ -70,11 +70,10 @@ profiles:
 
 ### Profile Resolution Pattern
 
-Each template starts with a 2-line preamble to resolve the profile:
+Each template starts with a 1-line preamble to resolve the profile (`.profile` is set by `.chezmoi.yaml.tmpl`):
 
 ```gotemplate
-{{- $id := output "sh" "-c" "system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8" | trim -}}
-{{- $p := dig $id (dict) .profiles -}}
+{{- $p := dig .profile (dict) .profiles -}}
 ```
 
 Then access profile data with `dig`:
@@ -118,6 +117,7 @@ For mise tools, parse `tool:version` entries first to get plain names:
 
 ## Key Files
 
+- `.chezmoi.yaml.tmpl` - auto-detects device profile via serial number hash, exposes `.profile` to all templates
 - `dot_Brewfile.tmpl` → `~/.Brewfile` - Homebrew packages and casks
 - `dot_config/mise/config.toml.tmpl` → `~/.config/mise/config.toml` - mise tools (gcloud, helm, kubectl, terraform, etc.)
 - `dot_gitconfig.tmpl` → `~/.gitconfig` - Git config using `gh` for credentials
