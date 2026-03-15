@@ -54,15 +54,27 @@ profiles:
         - chezmoi
         - gh
         - git
+        - jq
         - mise
         - tree
+        - yq
       casks:
         - claude
         - claude-code
         - google-chrome
         - hiddenbar
         - iterm2
-        - obsidian
         - microsoft-teams
+        - obsidian
         - raycast
         - visual-studio-code
+    mise:
+      tools:
+        - gcloud
+        - helm
+        - k9s
+        - kubectl
+        - node:24.14
+        - pulumi
+        - python:3.14
+        - terraform
