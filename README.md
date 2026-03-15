@@ -13,7 +13,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply bborysenko
 
 ### Device Profiles
 
-Each device has a profile in [.chezmoidata.yaml](.chezmoidata.yaml) that defines exactly what gets installed — Homebrew packages, mise tools, and git config. Profiles are keyed by a SHA256 hash of the Mac serial number (first 8 chars) for privacy. No profile = nothing installed.
+Each device has a profile in [.chezmoidata.yaml](.chezmoidata.yaml) that defines exactly what gets installed — Homebrew packages and mise tools. Profiles are keyed by a SHA256 hash of the Mac serial number (first 8 chars) for privacy. No profile = nothing installed. Git user name/email are prompted on first run and stored locally.
 
 The device profile is auto-detected via serial number hash in `.chezmoi.yaml.tmpl` and exposed to all templates — changes take effect immediately on `chezmoi apply`.
 
@@ -30,9 +30,6 @@ system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 |
 ```yaml
 profiles:
   a1b2c3d4:
-    git:
-      name: Your Name
-      email: your@email.com
     brews:
       taps:
         - name: some/tap

@@ -45,7 +45,7 @@ Bootstrap order on fresh Mac:
 
 ## Device Profiles
 
-Each device has a profile in `.chezmoidata.yaml` keyed by `SHA256(Mac serial number)[:8]`. Profiles are the source of truth — they define exactly what gets installed. No profile = nothing installed.
+Each device has a profile in `.chezmoidata.yaml` keyed by `SHA256(Mac serial number)[:8]`. Profiles are the source of truth — they define exactly what gets installed. No profile = nothing installed. Git user name/email are prompted via `promptStringOnce` in `.chezmoi.yaml.tmpl` and stored locally (not committed).
 
 `.chezmoi.yaml.tmpl` auto-detects the device serial via `ioreg`, hashes it with SHA-256, and exposes the first 8 hex chars as `.profile` in chezmoi's template data. Templates then look up `.profiles` from `.chezmoidata.yaml` using that key. Changes to profiles take effect immediately on `chezmoi apply` (no `chezmoi init` needed).
 
@@ -56,9 +56,6 @@ Each device has a profile in `.chezmoidata.yaml` keyed by `SHA256(Mac serial num
 ```yaml
 profiles:
   <hash>:
-    git:
-      name: Name
-      email: email@example.com
     brews:
       taps: [{ name: "org/tap" }]
       formulas: [chezmoi, gh, git]
@@ -117,9 +114,9 @@ For mise tools, parse `tool:version` entries first to get plain names:
 
 ## Key Files
 
-- `.chezmoi.yaml.tmpl` - auto-detects device profile via serial number hash, exposes `.profile` to all templates
+- `.chezmoi.yaml.tmpl` - auto-detects device profile via serial number hash, exposes `.profile` to all templates; prompts for git name/email via `promptStringOnce`
 - `dot_Brewfile.tmpl` → `~/.Brewfile` - Homebrew packages and casks
 - `dot_config/mise/config.toml.tmpl` → `~/.config/mise/config.toml` - mise tools (gcloud, helm, kubectl, terraform, etc.)
-- `dot_gitconfig.tmpl` → `~/.gitconfig` - Git config using `gh` for credentials
+- `dot_gitconfig.tmpl` → `~/.gitconfig` - Git config using `.git.name`/`.git.email` from chezmoi data and SSH signing
 - `dot_zshrc.tmpl` → `~/.zshrc` - Shell config with oh-my-zsh and mise activation
 - `.chezmoiignore` - files to exclude from target (CLAUDE.md, README.md)
