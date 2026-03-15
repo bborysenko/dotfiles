@@ -1,0 +1,32 @@
+{{- /*
+  Automatic device profile detection — no prompts required.
+
+  Detection strategy:
+    1. On macOS, run `ioreg -c IOPlatformExpertDevice -d 2` and extract
+       IOPlatformSerialNumber using regexFind/regexReplaceAll (no shell pipes).
+    2. Hash the serial with SHA-256 and take the first 8 hex characters as the
+       profile ID. The hash input is "<serial>\n" (newline appended) so it
+       matches the IDs produced by the legacy shell pipeline:
+         system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8
+    3. Fall back to profile="default", serial="" on non-macOS or when the
+       serial cannot be extracted.
+
+  Verification — after `chezmoi apply` run:
+    chezmoi data | grep -E '"profile"|"serial"'
+  Expected output:
+    "profile": "56f82f1e",   <- first 8 chars of SHA256("<serial>\n")
+    "serial":  "XXXXXXXXXX",
+*/ -}}
+{{- $serial := "" -}}
+{{- $profile := "default" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $ioregOut := output "ioreg" "-c" "IOPlatformExpertDevice" "-d" "2" -}}
+{{-   $line := regexFind `IOPlatformSerialNumber" = "[^"]+"` $ioregOut -}}
+{{-   if $line -}}
+{{-     $serial = regexReplaceAll `.*"([^"]+)"` $line "${1}" -}}
+{{-     $profile = sha256sum (print $serial "\n") | substr 0 8 -}}
+{{-   end -}}
+{{- end -}}
+data:
+    profile: {{ $profile | quote }}
+    serial: {{ $serial | quote }}

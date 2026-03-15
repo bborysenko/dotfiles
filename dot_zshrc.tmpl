@@ -1,5 +1,4 @@
-{{- $id := output "sh" "-c" "system_profiler SPHardwareDataType | awk '/Serial/{print $NF}' | shasum -a 256 | cut -c1-8" | trim -}}
-{{- $p := dig $id (dict) .profiles -}}
+{{- $p := dig .profile (dict) .profiles -}}
 {{- $miseTools := list -}}
 {{- range dig "mise" "tools" list $p -}}
 {{-   if contains ":" . -}}
