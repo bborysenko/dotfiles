@@ -12,3 +12,13 @@ Host github.com
     IdentityFile ~/.ssh/github_{{ .chezmoi.hostname }}
     AddKeysToAgent yes
     UseKeychain yes
+
+{{- if eq .profile "7d641a58" }}
+
+Host bitbucket.org
+    HostName bitbucket.org
+    User git
+    IdentityFile ~/.ssh/bitbucket_{{ .profile }}
+    AddKeysToAgent yes
+    UseKeychain yes
+{{- end }}

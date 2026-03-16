@@ -1,0 +1,32 @@
+{{- if eq .profile "7d641a58" -}}
+#!/bin/bash
+set -euo pipefail
+
+KEY_NAME="bitbucket_{{ .profile }}"
+KEY_PATH="$HOME/.ssh/$KEY_NAME"
+
+# Generate SSH key if it doesn't exist
+if [[ ! -f "$KEY_PATH" ]]; then
+    echo "Generating SSH key: $KEY_PATH"
+    mkdir -p "$HOME/.ssh"
+    chmod 700 "$HOME/.ssh"
+    ssh-keygen -t ed25519 -f "$KEY_PATH" -N "" -C "{{ .profile }}"
+    echo "SSH key generated."
+fi
+
+# Add key to macOS keychain (will persist across reboots)
+if ! ssh-add -l 2>/dev/null | grep -q "$KEY_NAME"; then
+    echo "Adding SSH key to keychain..."
+    ssh-add --apple-use-keychain "$KEY_PATH" 2>/dev/null || ssh-add -K "$KEY_PATH" 2>/dev/null || ssh-add "$KEY_PATH"
+fi
+
+echo ""
+echo "=== Bitbucket SSH Setup ==="
+echo "Add this public key to Bitbucket (Settings > SSH keys):"
+echo ""
+cat "$KEY_PATH.pub"
+echo ""
+echo "Verify access:"
+echo "  ssh -T git@bitbucket.org"
+echo ""
+{{ end -}}
